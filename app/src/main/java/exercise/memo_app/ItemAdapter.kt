@@ -7,34 +7,47 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+
 import androidx.recyclerview.widget.RecyclerView
-import exercise.memo_app.databinding.ItemListBinding
+import exercise.memo_app.AddMemo.MemoModel
+import exercise.memo_app.databinding.MemoListBinding
 
-class ItemAdapter (): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ItemAdapter (val onItemClicked : (MemoModel) -> Unit): ListAdapter<MemoModel, ItemAdapter.ViewHolder>(diffUtil){
 
+    inner class ViewHolder(private val view:MemoListBinding):RecyclerView.ViewHolder(view.root)
+    {
+        fun bind(memoModel : MemoModel){
+            view.titleTextView.text = memoModel.title
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-
-
-        var editTextView = view.findViewById<EditText>(R.id.editTextView)
-
-
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return itemCount
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+        }
 
     }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAdapter.ViewHolder {
+        return ViewHolder(MemoListBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    }
+
+    override fun onBindViewHolder(holder: ItemAdapter.ViewHolder, position: Int) {
+        holder.bind(currentList[position])
+    }
+
+
+    companion object{
+
+        val diffUtil = object : DiffUtil.ItemCallback<MemoModel>(){
+            override fun areItemsTheSame(oldItem: MemoModel, newItem: MemoModel): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: MemoModel, newItem: MemoModel): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
+
 
 
 }
+
