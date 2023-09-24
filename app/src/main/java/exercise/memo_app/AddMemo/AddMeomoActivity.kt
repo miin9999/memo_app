@@ -8,6 +8,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import exercise.memo_app.DBkeys.Companion.DB_MEMO
 import exercise.memo_app.databinding.ActivityAddmemoBinding
+import java.lang.System.currentTimeMillis
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class AddMeomoActivity : AppCompatActivity() {
 
@@ -21,14 +24,16 @@ class AddMeomoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 두 개의 editText를 가져와서 db에 넣으면 됨
-
         binding.completeBtn.setOnClickListener {
+
+            val format = SimpleDateFormat("yyyy.MM.dd a HH:mm:ss")
+            val date = System.currentTimeMillis()
+
             val todoEditText = binding.todoEditText.text.toString()
             val contentEditText = binding.todoContentEditText.text.toString()
+            val currentTime = format.format(date).toString()
 
-
-            // 마지막 인자엔 현재 시각을 key로 전달함
-            val model = MemoModel(todoEditText,contentEditText)
+            val model = MemoModel(todoEditText,contentEditText,currentTime)
             memoDB.push().setValue(model)
 
             finish()

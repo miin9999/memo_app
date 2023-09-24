@@ -66,9 +66,6 @@ class MainActivity : AppCompatActivity() {
             //TODO 메모들 중 하나를 눌렀을 때, 수정,삭제 버튼이 있는 액티비티로 넘어가기
             // 그 함수를 어댑터에 넘기는 것임
 
-            // Memo 모델의 key 값을 detail 액티비로 넘겨서
-            // 그 키와 대조하여 맞는 데이터를 db에서 가져오면 된다
-
             val intent = Intent(this,MemoDetailActivity::class.java)
             startActivity(intent)
 
@@ -93,4 +90,11 @@ class MainActivity : AppCompatActivity() {
         // 새로운 acitivity를 finish 해주고 다시 돌아오는 것도 resume 판정인 것 같음
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        memoDB.removeEventListener(listener)
+    }
+
+
 }

@@ -3,7 +3,8 @@ package exercise.memo_app.AddMemo
 data class MemoModel (
     val title : String,
     val content : String,
+    val currentTime : String,
 
 ){
-    constructor() : this("","")
+    constructor() : this("","","")
 }

@@ -7,23 +7,16 @@
     android:padding="20dp">
 
 
-    <TextView
-        android:id="@+id/titleTextViewOfDetailPage"
+    <EditText
+        android:id="@+id/titleEditTextOfEditPage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="temp title" />
-
-    <TextView
-        android:id="@+id/currentTimetext"
-        tools:text="currentTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextViewOfDetailPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 
     <View
@@ -34,13 +27,14 @@
         android:background="@color/mint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/currentTimetext" />
+        app:layout_constraintTop_toBottomOf="@id/titleEditTextOfEditPage" />
 
-    <TextView
-        android:id="@+id/contentTextViewOfDetailPage"
+    <EditText
+        android:id="@+id/contentEditTextOfEditPage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@null"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,24 +47,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="13dp"
         android:backgroundTint="@color/mint"
-        android:text="@string/editButton"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/removeBtn"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/removeBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/mint"
-        android:text="@string/removeButton"
+        android:text="@string/completeButton"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/editButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

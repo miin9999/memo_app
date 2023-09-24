@@ -1,5 +1,6 @@
 package exercise.memo_app.MemoDetail
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import exercise.memo_app.AddMemo.MemoModel
 import exercise.memo_app.DBkeys.Companion.DB_MEMO
 import exercise.memo_app.DBkeys.Companion.DB_TITLE
+import exercise.memo_app.EditMemo.EditMemoActivity
 import exercise.memo_app.R
 import exercise.memo_app.databinding.ActivityMemoDetailBinding
 
@@ -24,12 +26,20 @@ class MemoDetailActivity : AppCompatActivity() {
     private lateinit var memoDB : DatabaseReference
     private lateinit var binding : ActivityMemoDetailBinding
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMemoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        getMemodata() // 저장된 메모 데이터를 가져옴
+
+        binding.editButton.setOnClickListener {
+            // 글 내에서의 수정 버튼, 누르면 eidtActivity로 이동
+            val intent = Intent(this,EditMemoActivity::class.java)
+            startActivity(intent)
+
+        }
 
 
         memoDB = Firebase.database.reference.child(DB_MEMO)
@@ -44,20 +54,22 @@ class MemoDetailActivity : AppCompatActivity() {
 
                     val model = it.getValue(MemoModel::class.java)
                     model ?: return
-
-
                     // .text를 잊지 말기
                     binding.titleTextViewOfDetailPage.text = model.title
                     binding.contentTextViewOfDetailPage.text = model.content
+                    binding.currentTimetext.text = model.currentTime
 
                     //Log.d("memomomo",model.title)
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
+
+
+    }
+
+    private fun getMemodata(){
 
     }
 

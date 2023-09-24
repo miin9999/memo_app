@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".AddMemo.AddMeomoActivity"/>
         <activity android:name=".MemoDetail.MemoDetailActivity"/>
+        <activity android:name=".EditMemo.EditMemoActivity"/>
     </application>
 
 </manifest>

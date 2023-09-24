@@ -23,7 +23,6 @@ class ItemAdapter (val onItemClicked : (MemoModel) -> Unit): ListAdapter<MemoMod
 
         }
 
-
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(MemoListBinding.inflate(LayoutInflater.from(parent.context),parent,false))
