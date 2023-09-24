@@ -22,20 +22,17 @@ class AddMeomoActivity : AppCompatActivity() {
 
         // 두 개의 editText를 가져와서 db에 넣으면 됨
 
-
         binding.completeBtn.setOnClickListener {
             val todoEditText = binding.todoEditText.text.toString()
             val contentEditText = binding.todoContentEditText.text.toString()
 
+
+            // 마지막 인자엔 현재 시각을 key로 전달함
             val model = MemoModel(todoEditText,contentEditText)
             memoDB.push().setValue(model)
 
             finish()
         }
-
-
-
-
 
     }
 }

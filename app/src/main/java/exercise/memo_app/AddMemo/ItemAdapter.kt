@@ -1,34 +1,35 @@
-package exercise.memo_app
+package exercise.memo_app.AddMemo
 
-import android.text.Layout
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
 import androidx.recyclerview.widget.RecyclerView
-import exercise.memo_app.AddMemo.MemoModel
 import exercise.memo_app.databinding.MemoListBinding
 
-class ItemAdapter (val onItemClicked : (MemoModel) -> Unit): ListAdapter<MemoModel, ItemAdapter.ViewHolder>(diffUtil){
+class ItemAdapter (val onItemClicked : (MemoModel) -> Unit): ListAdapter<MemoModel, ItemAdapter.ViewHolder>(
+    diffUtil
+){
 
     inner class ViewHolder(private val view:MemoListBinding):RecyclerView.ViewHolder(view.root)
     {
         fun bind(memoModel : MemoModel){
             view.titleTextView.text = memoModel.title
 
+            view.root.setOnClickListener {
+                onItemClicked(memoModel)
+            }
+
         }
 
+
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(MemoListBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-    override fun onBindViewHolder(holder: ItemAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
