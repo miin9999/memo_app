@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             // 그 함수를 어댑터에 넘기는 것임
 
             val intent = Intent(this,MemoDetailActivity::class.java)
+            intent.putExtra("key",MemoModel.key)
             startActivity(intent)
 
         })

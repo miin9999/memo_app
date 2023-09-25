@@ -34,6 +34,8 @@ class MemoDetailActivity : AppCompatActivity() {
 
         getMemodata() // 저장된 메모 데이터를 가져옴
 
+        val key = intent.getLongExtra("key",-1)
+
         binding.editButton.setOnClickListener {
             // 글 내에서의 수정 버튼, 누르면 eidtActivity로 이동
             val intent = Intent(this,EditMemoActivity::class.java)
@@ -42,34 +44,35 @@ class MemoDetailActivity : AppCompatActivity() {
         }
 
 
+        // 애초에 add할때 넘어오는 key값을 받아서 child를 key값으로 경로 설정을 해서 데이터를 꺼내오는 방법이 나을 것 같음
         memoDB = Firebase.database.reference.child(DB_MEMO)
+
+
 
         memoDB.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                // DB에 데이터를 push()메서드로 넣었을 땐 children쓰면 되는 것 같음
-                // memo db를 보면 key 값의 한 단계 아래에 저장되는 것을 볼 수 있다
-                // db의 key값을 가져오는 방법도 있을텐데 아직 잘 모르겠
-                snapshot.children.forEach {
-
-                    val model = it.getValue(MemoModel::class.java)
-                    model ?: return
-                    // .text를 잊지 말기
-                    binding.titleTextViewOfDetailPage.text = model.title
-                    binding.contentTextViewOfDetailPage.text = model.content
-                    binding.currentTimetext.text = model.currentTime
-
-                    //Log.d("memomomo",model.title)
+                // i의 key값은 db의 push 고유키값으로 나옴
+                for ( i in snapshot.children){
+                    //Log.d("dsafsadf",i.getValue().toString())
+                    val model = i.getValue(MemoModel::class.java)
+                    if(key.equals(model!!.key)){
+                        binding.titleTextViewOfDetailPage.text = model.title
+                        binding.contentTextViewOfDetailPage.text = model.content
+                        binding.currentTimetext.text = model.currentTime
+                    }
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
+
             }
+
         })
-
-
     }
 
     private fun getMemodata(){
+
 
     }
 
