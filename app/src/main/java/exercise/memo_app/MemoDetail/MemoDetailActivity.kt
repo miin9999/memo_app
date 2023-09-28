@@ -26,15 +26,16 @@ class MemoDetailActivity : AppCompatActivity() {
     private lateinit var memoDB : DatabaseReference
     private lateinit var binding : ActivityMemoDetailBinding
 
+    private var positionKey : Int  = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMemoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
-        getMemodata() // 저장된 메모 데이터를 가져옴
 
-        val positionKey = intent.getIntExtra("positionKey",-1)
+
+        positionKey = intent.getIntExtra("positionKey",-1)
         val snapshotKey = intent.getStringExtra("snapshotKey")
 
         binding.editButton.setOnClickListener {
@@ -48,8 +49,15 @@ class MemoDetailActivity : AppCompatActivity() {
 
         }
 
+        // 저장된 메모 데이터를 가져옴
+        getMemodata()
 
-        // 애초에 add할때 넘어오는 key값을 받아서 child를 key값으로 경로 설정을 해서 데이터를 꺼내오는 방법이 나을 것 같음
+
+
+    }
+
+    private fun getMemodata(){
+
         memoDB = Firebase.database.reference.child(DB_MEMO)
 
         memoDB.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -73,13 +81,14 @@ class MemoDetailActivity : AppCompatActivity() {
             }
 
         })
+
+
+
     }
 
-    private fun getMemodata(){
-
-        // 여기서, 바뀐 데이터들을 다시 가져오면 됨
-
-
+    override fun onResume() {
+        super.onResume()
+        getMemodata()
 
     }
 

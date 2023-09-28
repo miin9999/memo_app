@@ -1,5 +1,6 @@
 package exercise.memo_app.EditMemo
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.renderscript.Sampler.Value
 import android.util.Log
@@ -31,6 +32,10 @@ class EditMemoActivity : AppCompatActivity() {
         val snapshotKey = intent.getStringExtra("snapshotKey")
 
 
+        val format = SimpleDateFormat("yyyy.MM.dd a HH:mm:ss")
+        val editCurrentTime =format.format(System.currentTimeMillis()).toString()
+
+
         memoDB = Firebase.database.getReference(DB_MEMO)
 
         memoDB.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -58,7 +63,7 @@ class EditMemoActivity : AppCompatActivity() {
 
             Log.d("dvdvdvd",snapshotKey.toString())
             memoDB.child("$snapshotKey").setValue(MemoModel(binding.titleEditTextOfEditPage.text.toString(),
-                binding.contentEditTextOfEditPage.text.toString(),"kkk",positionKey))
+                binding.contentEditTextOfEditPage.text.toString(),editCurrentTime,positionKey))
              finish()
 
 

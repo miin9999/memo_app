@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this,MemoDetailActivity::class.java)
             intent.putExtra("positionKey",MemoModel.positionkey)
             intent.putExtra("snapshotKey",contentKeyList[MemoModel.positionkey])
-            // 정상 / Log.d("DFSFDS",contentKeyList[MemoModel.positionkey])
 
             startActivity(intent)
 
