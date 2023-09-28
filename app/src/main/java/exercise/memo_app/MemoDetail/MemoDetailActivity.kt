@@ -34,12 +34,16 @@ class MemoDetailActivity : AppCompatActivity() {
 
         getMemodata() // 저장된 메모 데이터를 가져옴
 
-        val key = intent.getLongExtra("key",-1)
+        val positionKey = intent.getIntExtra("positionKey",-1)
+        val snapshotKey = intent.getStringExtra("snapshotKey")
 
         binding.editButton.setOnClickListener {
             // 글 내에서의 수정 버튼, 누르면 editActivity로 이동
+            Log.d("DFSFDS",snapshotKey.toString())
             val intent = Intent(this,EditMemoActivity::class.java)
-            intent.putExtra("key",key)
+            intent.putExtra("positionKey",positionKey)
+            intent.putExtra("snapshotKey",snapshotKey)
+
             startActivity(intent)
 
         }
@@ -55,7 +59,7 @@ class MemoDetailActivity : AppCompatActivity() {
                 for ( i in snapshot.children){
                     //Log.d("dsafsadf",i.key!!.toString())
                     val model = i.getValue(MemoModel::class.java)
-                    if(key.equals(model!!.key)){
+                    if(positionKey==(model!!.positionkey)){
                         binding.titleTextViewOfDetailPage.text = model.title
                         binding.contentTextViewOfDetailPage.text = model.content
                         binding.currentTimetext.text = model.currentTime
@@ -72,6 +76,9 @@ class MemoDetailActivity : AppCompatActivity() {
     }
 
     private fun getMemodata(){
+
+        // 여기서, 바뀐 데이터들을 다시 가져오면 됨
+
 
 
     }

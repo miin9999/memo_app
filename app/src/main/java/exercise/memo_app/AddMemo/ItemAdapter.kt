@@ -17,7 +17,7 @@ class ItemAdapter (val onItemClicked : (MemoModel) -> Unit): ListAdapter<MemoMod
         fun bind(memoModel : MemoModel){
             view.titleTextView.text = memoModel.title
 
-            view.root.setOnClickListener {
+            view.root.setOnClickListener{
                 onItemClicked(memoModel)
             }
 
