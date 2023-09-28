@@ -37,8 +37,9 @@ class MemoDetailActivity : AppCompatActivity() {
         val key = intent.getLongExtra("key",-1)
 
         binding.editButton.setOnClickListener {
-            // 글 내에서의 수정 버튼, 누르면 eidtActivity로 이동
+            // 글 내에서의 수정 버튼, 누르면 editActivity로 이동
             val intent = Intent(this,EditMemoActivity::class.java)
+            intent.putExtra("key",key)
             startActivity(intent)
 
         }
@@ -47,14 +48,12 @@ class MemoDetailActivity : AppCompatActivity() {
         // 애초에 add할때 넘어오는 key값을 받아서 child를 key값으로 경로 설정을 해서 데이터를 꺼내오는 방법이 나을 것 같음
         memoDB = Firebase.database.reference.child(DB_MEMO)
 
-
-
         memoDB.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                // i의 key값은 db의 push 고유키값으로 나옴
+                // Log에서 i의 key값은 db의 push 고유키값으로 나옴
                 for ( i in snapshot.children){
-                    //Log.d("dsafsadf",i.getValue().toString())
+                    //Log.d("dsafsadf",i.key!!.toString())
                     val model = i.getValue(MemoModel::class.java)
                     if(key.equals(model!!.key)){
                         binding.titleTextViewOfDetailPage.text = model.title
@@ -62,6 +61,7 @@ class MemoDetailActivity : AppCompatActivity() {
                         binding.currentTimetext.text = model.currentTime
                     }
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
