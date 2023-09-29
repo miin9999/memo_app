@@ -1,9 +1,11 @@
 package exercise.memo_app
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             // 1. 첫 화면에서 contentKeyList에 데이터의 고유 key를 모두 넣는다
             // 그럼 아예 처음부터 content가 key값을 갖게 해야 하나
             // 고유키값은 snapshot.key로 찾을 수 있는데
-            // todo, 그 키랑 아이템의 position을 연결시킬 방법이 없음
+            // 그 키랑 아이템의 position을 연결시킬 방법이 없음
             // 근데 애초에 글을 등록할 때의 키값을 가져올 수 잇나???? 안됨 snapshot이 없어
             // 2. 그 키로 DetailActivity를 그린다
             // 3. editactivity에도 똑같이 키를 넘겨서 수정할때 그 키에 해당하는 데이터에 child,setvalue하기
@@ -51,19 +53,31 @@ class MainActivity : AppCompatActivity() {
             contentKeyList.add(snapshot.key.toString())
             memoModelFromDB ?: return
 
-            Log.d("FEEEE",memoModelFromDB.toString())
-            Log.d("@@@DD",contentKeyList.toString())
+            Log.d("OnChildAdded",memoModelFromDB.toString())
 
 
             memoList.add(memoModelFromDB)
             memoAdapter.submitList(memoList)
+            Log.d("ffefef",memoList.toString())
 
-            //memoAdapter.notifyDataSetChanged()
+
+            memoAdapter.notifyDataSetChanged()
 
 
     }
 
-    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+        val memoModelFromDB = snapshot.getValue(MemoModel::class.java)
+        Log.d("OnChildChanged",memoModelFromDB.toString())
+        memoModelFromDB ?: return
+        memoList.clear()
+        memoList.add(memoModelFromDB)
+        memoAdapter.submitList(memoList)
+        memoAdapter.notifyDataSetChanged()
+
+
+
+    }
         override fun onChildRemoved(snapshot: DataSnapshot) {}
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onCancelled(error: DatabaseError) {}
@@ -86,15 +100,18 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        memoAdapter = ItemAdapter ( onItemClicked = { MemoModel ->
+
+
+        memoAdapter = ItemAdapter (onItemClicked = { memoModel ->
             //TODO 메모들 중 하나를 눌렀을 때, 수정,삭제 버튼이 있는 액티비티로 넘어가기
             // 그 함수를 어댑터에 넘기는 것임
 
             val intent = Intent(this,MemoDetailActivity::class.java)
-            intent.putExtra("positionKey",MemoModel.positionkey)
-            intent.putExtra("snapshotKey",contentKeyList[MemoModel.positionkey])
+            intent.putExtra("positionKey",memoModel.positionkey)
+            intent.putExtra("snapshotKey",contentKeyList[memoModel.positionkey])
 
             startActivity(intent)
+
 
         })
 
@@ -103,15 +120,24 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = memoAdapter
 
+
         memoDB.addChildEventListener(listener)
+
+
 
 
 
     }
 
+
+
+
     override fun onResume() {
+
         super.onResume()
+
         memoAdapter.notifyDataSetChanged()
+
 
         // 테스트 해보니 이 부분이 없으면 메모 추가 액티비티에서 '완료' 버튼을 누르고
         // 메인으로 돌아올 때 리스트가 갱신되지 않음
@@ -123,6 +149,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         memoDB.removeEventListener(listener)
     }
+
 
 
 }

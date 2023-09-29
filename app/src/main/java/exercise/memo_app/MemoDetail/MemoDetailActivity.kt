@@ -35,6 +35,7 @@ class MemoDetailActivity : AppCompatActivity() {
 
 
 
+
         positionKey = intent.getIntExtra("positionKey",-1)
         val snapshotKey = intent.getStringExtra("snapshotKey")
 
@@ -52,6 +53,7 @@ class MemoDetailActivity : AppCompatActivity() {
         // 저장된 메모 데이터를 가져옴
         getMemodata()
 
+        setResult(RESULT_OK)
 
 
     }
